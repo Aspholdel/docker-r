@@ -1,0 +1,24 @@
+version: '3'
+services:
+  web:
+    # Konfiguracja budowy obrazu
+    build:
+      context: .  # Kontekst budowy (bieżący katalog)
+      dockerfile: Dockerfile.dev  # Plik Dockerfile używany do budowy obrazu
+
+    # Konfiguracja portów
+    ports:
+      - "3000:3000"  # Przekierowanie portu 3000 z hosta do portu 3000 w kontenerze
+
+    # Konfiguracja woluminów
+    volumes:
+      - /home/node/app/node_modules  # Zamontowanie woluminu z hosta do kontenera
+      - .:/home/node/app  # Zamontowanie bieżącego katalogu z hosta do /home/node/app w kontenerze
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /home/node/app/node_modules  # Zamontowanie woluminu z hosta do kontenera
+      - .:/home/node/app
+    command: ["npm", "run", "start"]
